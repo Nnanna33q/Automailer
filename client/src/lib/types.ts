@@ -1,0 +1,1 @@
+export type TCoin = "BTC" | "ETH" | "USDT" | "USDC" | "XRP" | "BNB" | "SOL";
