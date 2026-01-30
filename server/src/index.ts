@@ -27,6 +27,8 @@ app.use(cors({
             callback(null, true)
         } else if(process.env.NODE_ENVIRONMENT === 'development' && origin === 'http://localhost:5173') {
             callback(null, true);
+        } else if(!origin) {
+            callback(null, true);
         } else callback(new Error('This origin is not allowed'), false)
     }
 }))
