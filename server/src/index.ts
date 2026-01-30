@@ -9,7 +9,7 @@ import type { TBybitDepositBody, TBybitWithdrawalBody, TBinanceDepositBody, TBin
 import fs from 'fs/promises';
 import path from 'path';
 import cors from 'cors';
-import rateLimit from 'express-rate-limit';
+import { rateLimit } from 'express-rate-limit';
 
 const [ bybitDepositHtmlContent, bybitWithdrawalHtmlContent, binanceDepositHtmlContent, binanceWithdrawalHtmlContent ] = await Promise.all([
     fs.readFile(path.join('./html_templates/bybit_deposit.html'), { encoding: 'utf-8' }),
@@ -23,7 +23,7 @@ const app = express();
 
 app.use(cors({
     origin: (origin, callback) => {
-        if(process.env.NODE_ENVIRONMENT === 'Production' && origin === 'https://api.automailer.online') {
+        if(process.env.NODE_ENVIRONMENT === 'production' && origin === 'https://api.automailer.online') {
             callback(null, true)
         } else if(process.env.NODE_ENVIRONMENT === 'development' && origin === 'http://localhost:5173') {
             callback(null, true);
