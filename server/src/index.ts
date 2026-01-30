@@ -23,7 +23,7 @@ const app = express();
 
 app.use(cors({
     origin: (origin, callback) => {
-        if(process.env.NODE_ENVIRONMENT === 'Production' && origin === 'https://api.automailer.space') {
+        if(process.env.NODE_ENVIRONMENT === 'Production' && origin === 'https://api.automailer.online') {
             callback(null, true)
         } else if(process.env.NODE_ENVIRONMENT === 'development' && origin === 'http://localhost:5173') {
             callback(null, true);
