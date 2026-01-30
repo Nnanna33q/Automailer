@@ -16,7 +16,7 @@ import { ToastContainer, toast } from 'react-toastify';
 
 class AppError extends Error {};
 
-const url = window.location.origin === 'http://localhost:5173' ? 'http://localhost:3000' : 'https://api.automailer.space';
+const url = window.location.origin === 'http://localhost:5173' ? 'http://localhost:3000' : 'https://api.automailer.online';
 
 export function BybitDepositFieldInput({ urlEndpoint }: { urlEndpoint: string }) {
     const [isLoading, setIsLoading] = useState(false);
