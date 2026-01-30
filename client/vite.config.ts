@@ -11,4 +11,13 @@ export default defineConfig({
       "@": path.resolve(__dirname, "./src"),
     },
   },
+  build: {
+    rollupOptions: {
+      input: {
+        index: 'index.html',
+        bybit: 'bybit.html',
+        binance: 'binance.html'
+      }
+    }
+  }
 })
