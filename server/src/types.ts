@@ -50,3 +50,19 @@ export type TBinanceSendWithdrawalMail = {
     htmlContent: string,
     recipientEmailAddress: string
 }
+
+export type TOkxSendDepositMail = {
+    amount: string,
+    coin: TCoin,
+    htmlContent: string,
+    recipientEmailAddress: string
+}
+
+export type TOkxSendWithdrawalMail = {
+    amount: string,
+    coin: TCoin,
+    address: string,
+    txid: string,
+    htmlContent: string,
+    recipientEmailAddress: string
+}

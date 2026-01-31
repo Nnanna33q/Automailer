@@ -1,21 +1,38 @@
 import dotenv from 'dotenv';
 dotenv.config();
 import express from 'express'
-import { sendBybitDepositMail, sendBinanceDepositMail } from './utils/deposit.js';
-import { sendBybitWithdrawalMail, sendBinanceWithdrawalMail } from './utils/withdraw.js';
-import { validateBybitDepositBody, validateBybitWithdrawalBody, validateBinanceDepositBody, validateBinanceWithdrawalBody, checkErrors } from './utils/validation.js';
+import { sendBybitDepositMail, sendBinanceDepositMail, sendOkxDepositMail } from './utils/deposit.js';
+import { sendBybitWithdrawalMail, sendBinanceWithdrawalMail, sendOkxWithdrawalMail } from './utils/withdraw.js';
+import { 
+    validateBybitDepositBody, 
+    validateBybitWithdrawalBody, 
+    validateBinanceDepositBody, 
+    validateBinanceWithdrawalBody,
+    validateOkxDepositBody,
+    validateOkxWithdrawalBody,
+    checkErrors
+} from './utils/validation.js';
 import type { Request, Response } from 'express';
-import type { TBybitDepositBody, TBybitWithdrawalBody, TBinanceDepositBody, TBinanceWithdrawalBody } from './utils/validation.js';
+import type { TBybitDepositBody, TBybitWithdrawalBody, TBinanceDepositBody, TBinanceWithdrawalBody, TOkxDepositBody, TOkxWithdrawalBody } from './utils/validation.js';
 import fs from 'fs/promises';
 import path from 'path';
 import cors from 'cors';
 import { rateLimit } from 'express-rate-limit';
 
-const [ bybitDepositHtmlContent, bybitWithdrawalHtmlContent, binanceDepositHtmlContent, binanceWithdrawalHtmlContent ] = await Promise.all([
+const [ 
+    bybitDepositHtmlContent, 
+    bybitWithdrawalHtmlContent, 
+    binanceDepositHtmlContent, 
+    binanceWithdrawalHtmlContent,
+    okxDepositHtmlContent,
+    okxWithdrawalHtmlContent
+] = await Promise.all([
     fs.readFile(path.join('./html_templates/bybit_deposit.html'), { encoding: 'utf-8' }),
     fs.readFile(path.join('./html_templates/bybit_withdrawal.html'), { encoding: 'utf-8' }),
     fs.readFile(path.join('./html_templates/binance_deposit.html'), { encoding: 'utf-8' }),
-    fs.readFile(path.join('./html_templates/binance_withdrawal.html'), { encoding: 'utf-8' })
+    fs.readFile(path.join('./html_templates/binance_withdrawal.html'), { encoding: 'utf-8' }),
+    fs.readFile(path.join('./html_templates/okx_deposit.html'), { encoding: 'utf-8' }),
+    fs.readFile(path.join('./html_templates/okx_withdrawal.html'), { encoding: 'utf-8' })
 ])
 
 const PORT = process.env.PORT || 3000
@@ -109,6 +126,42 @@ app.post('/binance/withdrawal', validateBinanceWithdrawalBody, checkErrors, asyn
             recipientEmailAddress: body.recipientEmailAddress,
             txid: body.txid,
             htmlContent: binanceWithdrawalHtmlContent
+        })
+        res.status(201).json({ success: true });
+    } catch(error) {
+        console.error(error);
+        if(error instanceof Error) return res.status(500).json({ success: false, errorMessage: error.message });
+        res.status(500).json({ success: false, errorMessage: 'Something went wrong. Please try again' });
+    }
+})
+
+app.post('/okx/deposit', validateOkxDepositBody, checkErrors, async (req: Request, res: Response) => {
+    try {
+        const body: TOkxDepositBody = req.body;
+        await sendOkxDepositMail({
+            amount: body.amount,
+            coin: body.coin,
+            recipientEmailAddress: body.recipientEmailAddress,
+            htmlContent: okxDepositHtmlContent
+        })
+        res.status(201).json({ success: true });
+    } catch(error) {
+        console.error(error);
+        if(error instanceof Error) return res.status(500).json({ success: false, errorMessage: error.message });
+        res.status(500).json({ success: false, errorMessage: 'Something went wrong. Please try again' });
+    }
+})
+
+app.post('/okx/withdrawal', validateOkxWithdrawalBody, checkErrors, async(req: Request, res: Response) => {
+    try {
+        const body: TOkxWithdrawalBody = req.body;
+        await sendOkxWithdrawalMail({
+            amount: body.amount,
+            address: body.address,
+            coin: body.coin,
+            recipientEmailAddress: body.recipientEmailAddress,
+            txid: body.txid,
+            htmlContent: okxWithdrawalHtmlContent
         })
         res.status(201).json({ success: true });
     } catch(error) {

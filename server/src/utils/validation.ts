@@ -41,6 +41,10 @@ export type TBinanceWithdrawalBody = TBinanceDepositBody & {
     address: string
 }
 
+export type TOkxDepositBody = z.infer<typeof BinanceDepositBodySchema>
+
+export type TOkxWithdrawalBody = TBinanceWithdrawalBody
+
 export const validateBybitDepositBody = [
     body('amount').trim().isString().notEmpty().withMessage('Please enter an amount').custom((input) => {
         if (isNaN(input)) throw new Error('Use digits only (e.g. 100)');
@@ -91,6 +95,32 @@ export const validateBinanceDepositBody = [
 ]
 
 export const validateBinanceWithdrawalBody = [
+    body('amount').trim().isString().notEmpty().withMessage('Please enter an amount').custom((input) => {
+        if (isNaN(input)) throw new Error('Use digits only (e.g. 100)');
+        return true;
+    }),
+    body('coin').trim().isString().notEmpty().withMessage('Please enter a coin').custom((input) => {
+        if (supportedCoins.indexOf(input) === -1) throw new Error(`"${input}" is not a supported coin`);
+        return true;
+    }),
+    body('txid').trim().isString().notEmpty().withMessage('Please enter a transaction hash (txid)'),
+    body('address').trim().isString().notEmpty().withMessage('Please enter an address'),
+    body('recipientEmailAddress').trim().isString().notEmpty().withMessage('Please enter an email').isEmail().withMessage('Please enter a valid email')
+]
+
+export const validateOkxDepositBody = [
+    body('amount').trim().isString().notEmpty().withMessage('Please enter an amount').custom((input) => {
+        if (isNaN(input)) throw new Error('Use digits only (e.g. 100)');
+        return true;
+    }),
+    body('coin').trim().isString().notEmpty().withMessage('Please enter a coin').custom((input) => {
+        if (supportedCoins.indexOf(input) === -1) throw new Error(`"${input}" is not a supported coin`);
+        return true;
+    }),
+    body('recipientEmailAddress').trim().isString().notEmpty().withMessage('Please enter an email').isEmail().withMessage('Please enter a valid email')
+]
+
+export const validateOkxWithdrawalBody = [
     body('amount').trim().isString().notEmpty().withMessage('Please enter an amount').custom((input) => {
         if (isNaN(input)) throw new Error('Use digits only (e.g. 100)');
         return true;

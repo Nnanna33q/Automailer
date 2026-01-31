@@ -15,7 +15,7 @@ import {
   SidebarHeader,
   SidebarRail,
 } from "@/components/ui/sidebar"
-import { BinanceLogo, BybitLogo } from "./ui/crypto-logos"
+import { BinanceLogo, BybitLogo, OkxLogo } from "./ui/crypto-logos"
 
 // This is sample data.
 const data = {
@@ -47,6 +47,11 @@ const data = {
       title: "Binance",
       url: "binance.html",
       icon: BinanceLogo,
+    },
+    {
+      title: "OKX",
+      url: "okx.html",
+      icon: OkxLogo,
     }
   ]
 }
