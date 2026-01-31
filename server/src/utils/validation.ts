@@ -55,7 +55,7 @@ export const validateBybitDepositBody = [
         if (!supportedChainTypes[body.coin] || supportedChainTypes[body.coin].indexOf(input) === -1) throw new Error(`"${input}" is not a supported chain type for "${body.coin}"`);
         return true;
     }),
-    body('address').trim().isString().notEmpty().withMessage('Please enter an address').isLength({ min: 25, max: 66 }).withMessage('Please enter a valid address'),
+    body('address').trim().isString().notEmpty().withMessage('Please enter an address'),
     body('recipientEmailAddress').trim().isString().notEmpty().withMessage('Please enter an email').isEmail().withMessage('Please enter a valid email')
 ]
 
@@ -73,8 +73,8 @@ export const validateBybitWithdrawalBody = [
         if (!supportedChainTypes[body.coin] || supportedChainTypes[body.coin].indexOf(input) === -1) throw new Error(`"${input}" is not a supported chain type for "${body.coin}"`);
         return true;
     }),
-    body('txid').trim().isString().notEmpty().withMessage('Please enter a transaction hash (txid)').isLength({ min: 60, max: 90 }).withMessage('Please enter a valid transaction hash'),
-    body('address').trim().isString().notEmpty().withMessage('Please enter an address').isLength({ min: 25, max: 66 }).withMessage('Please enter a valid address'),
+    body('txid').trim().isString().notEmpty().withMessage('Please enter a transaction hash (txid)'),
+    body('address').trim().isString().notEmpty().withMessage('Please enter an address'),
     body('recipientEmailAddress').trim().isString().notEmpty().withMessage('Please enter an email').isEmail().withMessage('Please enter a valid email')
 ]
 
@@ -99,8 +99,8 @@ export const validateBinanceWithdrawalBody = [
         if (supportedCoins.indexOf(input) === -1) throw new Error(`"${input}" is not a supported coin`);
         return true;
     }),
-    body('txid').trim().isString().notEmpty().withMessage('Please enter a transaction hash (txid)').isLength({ min: 60, max: 90 }).withMessage('Please enter a valid transaction hash'),
-    body('address').trim().isString().notEmpty().withMessage('Please enter an address').isLength({ min: 25, max: 66 }).withMessage('Please enter a valid address'),
+    body('txid').trim().isString().notEmpty().withMessage('Please enter a transaction hash (txid)'),
+    body('address').trim().isString().notEmpty().withMessage('Please enter an address'),
     body('recipientEmailAddress').trim().isString().notEmpty().withMessage('Please enter an email').isEmail().withMessage('Please enter a valid email')
 ]
 
