@@ -16,7 +16,8 @@ export default defineConfig({
       input: {
         index: 'index.html',
         bybit: 'bybit.html',
-        binance: 'binance.html'
+        binance: 'binance.html',
+        okx: 'okx.html'
       }
     }
   }
